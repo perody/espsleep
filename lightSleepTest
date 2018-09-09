@@ -1,0 +1,46 @@
+/*
+Testing sleep with the ESP8266.
+
+First: deep sleep
+(copyed from https://www.losant.com/blog/making-the-esp8266-low-powered-with-deep-sleep)
+
+// Start here
+
+void setup() {
+  Serial.begin(115200);
+  Serial.setTimeout(2000);
+
+  // Wait for serial to initialize.
+  while(!Serial) { }
+  
+  Serial.printf("I'm awake for the %i. time!", counter);
+
+  Serial.println("Going into deep sleep for 20 seconds");
+  ESP.deepSleep(20e6); // 20e6 is 20 microseconds
+  counter++;
+}
+
+void loop() {
+}
+*/
+
+
+// then here for light sleep 
+
+#include <WiFi.h>
+#include <Arduino.h>
+#include "esp_system.h"
+
+int counter = 1;
+
+void setup() {
+    Serial.begin(115200);
+}
+
+void loop() {
+    Serial.println("light_sleep_enter");
+    esp_sleep_enable_timer_wakeup(10000000); //10 seconds
+    int ret = esp_light_sleep_start();
+    Serial.printf("light_sleep: %d\n", ret);
+    Serial.printf("this was the: %d. sleep\n", counter++);
+}
